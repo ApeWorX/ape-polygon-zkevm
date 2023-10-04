@@ -1,7 +1,5 @@
 import ape
 import pytest
-from ape._cli import cli as ape_cli
-from click.testing import CliRunner
 
 
 @pytest.fixture
@@ -15,16 +13,14 @@ def accounts():
 
 
 @pytest.fixture
-def runner():
-    return CliRunner()
+def polygon_zkevm(networks):
+    return networks.get_ecosystem("polygon-zkevm")
 
 
 @pytest.fixture
-def cli():
-    return ape_cli
-
-
-@pytest.fixture
-def local_network(networks):
-    with networks["polygon-zkevm"].local.use_provider("test"):
-        yield
+def eth_tester_provider():
+    if not ape.networks.active_provider or ape.networks.provider.name != "test":
+        with ape.networks.polygon_zkevm.local.use_provider("test") as provider:
+            yield provider
+    else:
+        yield ape.networks.provider
