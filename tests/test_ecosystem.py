@@ -20,7 +20,7 @@ def test_create_transaction(polygon_zkevm, tx_type, eth_tester_provider):
     (TransactionType.STATIC.value, TransactionType.DYNAMIC.value),
 )
 def test_encode_transaction(tx_type, polygon_zkevm, eth_tester_provider):
-    abi = MethodABI.parse_obj(
+    abi = MethodABI.model_validate(
         {
             "type": "function",
             "name": "fooAndBar",
