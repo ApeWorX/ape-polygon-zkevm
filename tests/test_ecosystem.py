@@ -3,16 +3,39 @@ from ape_ethereum.transactions import TransactionType
 from ethpm_types import MethodABI
 
 
-def test_gas_limit(polygon_zkevm, eth_tester_provider):
-    assert polygon_zkevm.config.local.gas_limit == "max"
+@pytest.mark.parametrize(
+    "tx_kwargs",
+    [
+        {"type": 0},
+        {"gas_price": 0},
+        {"gasPrice": 0},
+    ],
+)
+def test_create_transaction_type_0(polygon_zkevm, tx_kwargs):
+    txn = polygon_zkevm.create_transaction(**tx_kwargs)
+    assert txn.type == TransactionType.STATIC.value
 
 
-# NOTE: None because we want to show the default is STATIC
-@pytest.mark.parametrize("tx_type", (None, 0, "0x0"))
-def test_create_transaction(polygon_zkevm, tx_type, eth_tester_provider):
-    tx = polygon_zkevm.create_transaction(type=tx_type)
-    assert tx.type == TransactionType.STATIC.value
-    assert tx.gas_limit == eth_tester_provider.max_gas
+@pytest.mark.parametrize(
+    "tx_kwargs",
+    [
+        {},  # Default is type 2 in Polygon.
+        {"type": 2},
+        {"max_fee": 0},
+        {"max_fee_per_gas": 0},
+        {"maxFee": 0},
+        {"max_priority_fee_per_gas": 0},
+        {"max_priority_fee": 0},
+        {"maxPriorityFeePerGas": 0},
+    ],
+)
+def test_create_transaction_type_2(polygon_zkevm, tx_kwargs):
+    """
+    Show is smart-enough to deduce type 2 transactions.
+    """
+
+    txn = polygon_zkevm.create_transaction(**tx_kwargs)
+    assert txn.type == TransactionType.DYNAMIC.value
 
 
 @pytest.mark.parametrize(
