@@ -31,7 +31,7 @@ python3 setup.py install
 Installing this plugin adds support for the Polygon ZkEVM ecosystem:
 
 ```
-ape console --network polygon-zkevm:goerli 
+ape console --network polygon-zkevm:cardona
 ```
 
 ## Development
