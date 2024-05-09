@@ -6,7 +6,7 @@ EXPECTED_OUTPUT = """
 polygon-zkevm
 ├── mainnet
 │   └── geth  (default)
-├── goerli
+├── cardona
 │   └── geth  (default)
 └── local  (default)
     └── test  (default)
@@ -47,7 +47,7 @@ def assert_rich_text(actual: str, expected: str):
 def test_networks(runner, cli, polygon_zkevm):
     # Do this in case local env changed it.
     polygon_zkevm.mainnet.set_default_provider("geth")
-    polygon_zkevm.goerli.set_default_provider("geth")
+    polygon_zkevm.cardona.set_default_provider("geth")
 
     result = runner.invoke(cli, ["networks", "list"])
     assert_rich_text(result.output, EXPECTED_OUTPUT)

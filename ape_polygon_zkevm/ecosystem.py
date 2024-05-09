@@ -10,13 +10,13 @@ from ape_ethereum.ecosystem import (
 NETWORKS = {
     # chain_id, network_id
     "mainnet": (1101, 1101),
-    "goerli": (1442, 1442),
+    "cardona": (2442, 2442),
 }
 
 
 class PolygonZkEVMConfig(BaseEthereumConfig):
     mainnet: NetworkConfig = create_network_config(block_time=2, required_confirmations=1)
-    goerli: NetworkConfig = create_network_config(block_time=2, required_confirmations=1)
+    cardona: NetworkConfig = create_network_config(block_time=2, required_confirmations=1)
 
 
 class PolygonZkEVM(Ethereum):
