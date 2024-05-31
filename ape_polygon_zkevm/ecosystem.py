@@ -22,4 +22,5 @@ class PolygonZkEVMConfig(BaseEthereumConfig):
 class PolygonZkEVM(Ethereum):
     @property
     def config(self) -> PolygonZkEVMConfig:  # type: ignore
-        return cast(PolygonZkEVMConfig, self.config_manager.get_config("polygon-zkevm"))
+        cfg = self.config_manager.get_config("polygon-zkevm")
+        return cast(PolygonZkEVMConfig, cfg)
