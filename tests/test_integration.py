@@ -4,12 +4,12 @@ from click.testing import CliRunner
 
 EXPECTED_OUTPUT = """
 polygon-zkevm
-├── mainnet
-│   └── geth  (default)
 ├── cardona
-│   └── geth  (default)
-└── local  (default)
-    └── test  (default)
+│   └── node  (default)
+├── local  (default)
+│   └── test  (default)
+└── mainnet
+    └── node  (default)
 """.strip()
 
 
@@ -46,8 +46,8 @@ def assert_rich_text(actual: str, expected: str):
 
 def test_networks(runner, cli, polygon_zkevm):
     # Do this in case local env changed it.
-    polygon_zkevm.mainnet.set_default_provider("geth")
-    polygon_zkevm.cardona.set_default_provider("geth")
+    polygon_zkevm.mainnet.set_default_provider("node")
+    polygon_zkevm.cardona.set_default_provider("node")
 
-    result = runner.invoke(cli, ["networks", "list"])
+    result = runner.invoke(cli, ("networks", "list"))
     assert_rich_text(result.output, EXPECTED_OUTPUT)
