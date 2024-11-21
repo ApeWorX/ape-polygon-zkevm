@@ -8,7 +8,7 @@ def test_gas_limit(polygon_zkevm):
 
 
 def test_default_transaction_type(polygon_zkevm):
-    assert polygon_zkevm.config.mainnet.default_transaction_type == TransactionType.STATIC
+    assert polygon_zkevm.config.mainnet.default_transaction_type == TransactionType.DYNAMIC
 
 
 def test_mainnet_fork_not_configured():
