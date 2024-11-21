@@ -49,6 +49,27 @@ def providers():
 
 
 def __getattr__(name: str):
-    import ape_polygon_zkevm.ecosystem as module
+    if name == "NETWORKS":
+        from .ecosystem import NETWORKS
 
-    return getattr(module, name)
+        return NETWORKS
+
+    elif name == "PolygonZkEVM":
+        from .ecosystem import PolygonZkEVM
+
+        return PolygonZkEVM
+
+    elif name == "PolygonZkEVMConfig":
+        from .ecosystem import PolygonZkEVMConfig
+
+        return PolygonZkEVMConfig
+
+    else:
+        raise AttributeError(name)
+
+
+__all__ = [
+    "NETWORKS",
+    "PolygonZkEVM",
+    "PolygonZkEVMConfig",
+]
