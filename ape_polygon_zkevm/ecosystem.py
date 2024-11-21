@@ -1,5 +1,6 @@
 from typing import cast
 
+from ape_ethereum import TransactionType
 from ape_ethereum.ecosystem import (
     BaseEthereumConfig,
     Ethereum,
@@ -15,8 +16,16 @@ NETWORKS = {
 
 
 class PolygonZkEVMConfig(BaseEthereumConfig):
-    mainnet: NetworkConfig = create_network_config(block_time=2, required_confirmations=1)
-    cardona: NetworkConfig = create_network_config(block_time=2, required_confirmations=1)
+    mainnet: NetworkConfig = create_network_config(
+        block_time=2,
+        required_confirmations=1,
+        default_transaction_type=TransactionType.STATIC.value,
+    )
+    cardona: NetworkConfig = create_network_config(
+        block_time=2,
+        required_confirmations=1,
+        default_transaction_type=TransactionType.STATIC.value,
+    )
 
 
 class PolygonZkEVM(Ethereum):

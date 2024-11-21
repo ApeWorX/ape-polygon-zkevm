@@ -1,23 +1,31 @@
 from ape import plugins
-from ape.api.networks import LOCAL_NETWORK_NAME, ForkedNetworkAPI, NetworkAPI, create_network_type
-from ape_node import Node
-from ape_test import LocalProvider
-
-from .ecosystem import NETWORKS, PolygonZkEVM, PolygonZkEVMConfig
 
 
 @plugins.register(plugins.Config)
 def config_class():
+    from ape_polygon_zkevm.ecosystem import PolygonZkEVMConfig
+
     return PolygonZkEVMConfig
 
 
 @plugins.register(plugins.EcosystemPlugin)
 def ecosystems():
+    from ape_polygon_zkevm.ecosystem import PolygonZkEVM
+
     yield PolygonZkEVM
 
 
 @plugins.register(plugins.NetworkPlugin)
 def networks():
+    from ape.api.networks import (
+        LOCAL_NETWORK_NAME,
+        ForkedNetworkAPI,
+        NetworkAPI,
+        create_network_type,
+    )
+
+    from ape_polygon_zkevm.ecosystem import NETWORKS
+
     for network_name, network_params in NETWORKS.items():
         yield "polygon-zkevm", network_name, create_network_type(*network_params)
         yield "polygon-zkevm", f"{network_name}-fork", ForkedNetworkAPI
@@ -28,7 +36,40 @@ def networks():
 
 @plugins.register(plugins.ProviderPlugin)
 def providers():
+    from ape.api.networks import LOCAL_NETWORK_NAME
+    from ape_node import Node
+    from ape_test import LocalProvider
+
+    from ape_polygon_zkevm.ecosystem import NETWORKS
+
     for network_name in NETWORKS:
         yield "polygon-zkevm", network_name, Node
 
     yield "polygon-zkevm", LOCAL_NETWORK_NAME, LocalProvider
+
+
+def __getattr__(name: str):
+    if name == "NETWORKS":
+        from .ecosystem import NETWORKS
+
+        return NETWORKS
+
+    elif name == "PolygonZkEVM":
+        from .ecosystem import PolygonZkEVM
+
+        return PolygonZkEVM
+
+    elif name == "PolygonZkEVMConfig":
+        from .ecosystem import PolygonZkEVMConfig
+
+        return PolygonZkEVMConfig
+
+    else:
+        raise AttributeError(name)
+
+
+__all__ = [
+    "NETWORKS",
+    "PolygonZkEVM",
+    "PolygonZkEVMConfig",
+]
